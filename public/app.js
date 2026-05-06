@@ -30,11 +30,12 @@ function mostrarLogin() {
 // ── AUTENTICACIÓN ────────────────────────────────────────────
 
 // POST /api/auth/register
-// Registra un nuevo usuario
+// Registra un nuevo usuario con el rol elegido
 async function register() {
     const nombre = document.getElementById('reg-nombre').value;
     const email = document.getElementById('reg-email').value;
     const password = document.getElementById('reg-password').value;
+    const rol = document.getElementById('reg-rol').value;
 
     if (!nombre || !email || !password) {
         return mostrarMensaje('Todos los campos son obligatorios', true);
@@ -44,7 +45,7 @@ async function register() {
         const response = await fetch(`${API_URL}/auth/register`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nombre, email, password })
+            body: JSON.stringify({ nombre, email, password, rol })
         });
 
         const data = await response.json();
@@ -105,10 +106,23 @@ function logout() {
 }
 
 // Muestra la sección principal después del login
+// Si es agente oculta el formulario de crear ticket
+// Si es cliente muestra el formulario de crear ticket
 function mostrarSeccionPrincipal(usuario) {
     document.getElementById('seccion-auth').style.display = 'none';
     document.getElementById('seccion-principal').style.display = 'block';
-    document.getElementById('usuario-nombre').textContent = `👤 ${usuario.nombre}`;
+    document.getElementById('usuario-nombre').textContent = `👤 ${usuario.nombre} (${usuario.rol})`;
+
+    if (usuario.rol === 'agente') {
+        // El agente no crea tickets, solo los gestiona
+        document.getElementById('seccion-crear').style.display = 'none';
+        document.getElementById('titulo-tickets').textContent = 'Todos los Tickets';
+    } else {
+        // El cliente puede crear tickets
+        document.getElementById('seccion-crear').style.display = 'flex';
+        document.getElementById('titulo-tickets').textContent = 'Mis Tickets';
+    }
+
     cargarTickets();
 }
 
@@ -125,8 +139,13 @@ function getHeaders() {
 
 // GET /api/tickets
 // Carga todos los tickets y los muestra en la tabla
+// Si es agente muestra opciones de gestión
+// Si es cliente muestra botón de eliminar
 async function cargarTickets() {
     try {
+        const usuario = JSON.parse(localStorage.getItem('usuario'));
+        const esAgente = usuario.rol === 'agente';
+
         const response = await fetch(`${API_URL}/tickets`, {
             headers: getHeaders()
         });
@@ -150,7 +169,16 @@ async function cargarTickets() {
                 <td>${ticket.cliente}</td>
                 <td>${new Date(ticket.fecha_creacion).toLocaleDateString()}</td>
                 <td>
-                    <button onclick="eliminarTicket(${ticket.id_ticket})">🗑 Eliminar</button>
+                    ${esAgente ? `
+                        <select onchange="cambiarEstado(${ticket.id_ticket}, this.value, '${ticket.asunto}')">
+                            <option value="nuevo" ${ticket.estado === 'nuevo' ? 'selected' : ''}>Nuevo</option>
+                            <option value="en_progreso" ${ticket.estado === 'en_progreso' ? 'selected' : ''}>En Progreso</option>
+                            <option value="cerrado" ${ticket.estado === 'cerrado' ? 'selected' : ''}>Cerrado</option>
+                        </select>
+                        <button onclick="asignarme(${ticket.id_ticket}, '${ticket.asunto}')">📋 Asignarme</button>
+                    ` : `
+                        <button onclick="eliminarTicket(${ticket.id_ticket})">🗑 Eliminar</button>
+                    `}
                 </td>
             `;
             tbody.appendChild(fila);
@@ -162,7 +190,7 @@ async function cargarTickets() {
 }
 
 // POST /api/tickets
-// Crea un nuevo ticket
+// Crea un nuevo ticket con transacción en el backend
 async function crearTicket() {
     const asunto = document.getElementById('ticket-asunto').value;
     const descripcion = document.getElementById('ticket-descripcion').value;
@@ -199,8 +227,69 @@ async function crearTicket() {
     }
 }
 
+// PUT /api/tickets/:id
+// Cambia el estado de un ticket (solo agentes)
+// Aquí se dispara el trigger en la base de datos
+async function cambiarEstado(id, estado, asunto) {
+    try {
+        const usuario = JSON.parse(localStorage.getItem('usuario'));
+
+        const response = await fetch(`${API_URL}/tickets/${id}`, {
+            method: 'PUT',
+            headers: getHeaders(),
+            body: JSON.stringify({
+                asunto,
+                estado,
+                id_agente: usuario.id
+            })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            return mostrarMensaje(data.error, true);
+        }
+
+        mostrarMensaje('Estado actualizado correctamente');
+        cargarTickets();
+
+    } catch (error) {
+        mostrarMensaje('Error al cambiar estado', true);
+    }
+}
+
+// PUT /api/tickets/:id
+// El agente se asigna a un ticket y lo pasa a en_progreso
+async function asignarme(id, asunto) {
+    try {
+        const usuario = JSON.parse(localStorage.getItem('usuario'));
+
+        const response = await fetch(`${API_URL}/tickets/${id}`, {
+            method: 'PUT',
+            headers: getHeaders(),
+            body: JSON.stringify({
+                asunto,
+                estado: 'en_progreso',
+                id_agente: usuario.id
+            })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            return mostrarMensaje(data.error, true);
+        }
+
+        mostrarMensaje('Te asignaste al ticket correctamente');
+        cargarTickets();
+
+    } catch (error) {
+        mostrarMensaje('Error al asignarse al ticket', true);
+    }
+}
+
 // DELETE /api/tickets/:id
-// Elimina un ticket
+// Elimina un ticket con transacción en el backend
 async function eliminarTicket(id) {
     if (!confirm('¿Seguro que querés eliminar este ticket?')) return;
 

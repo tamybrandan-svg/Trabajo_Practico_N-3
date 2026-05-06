@@ -8,26 +8,28 @@ const pool = require('../db/index');    // Conexión a la base de datos
 
 // ── REGISTRO ─────────────────────────────────────────────────
 // POST /api/auth/register
-// Recibe: nombre, email, password
+// Recibe: nombre, email, password, rol
 // Devuelve: mensaje de éxito
 const register = async (req, res) => {
     try {
         // Extraemos los datos del body de la petición
-        const { nombre, email, password } = req.body;
+        const { nombre, email, password, rol } = req.body;
 
-        // Validamos que no falte ningún campo
+        // Validamos que no falte ningún campo obligatorio
         if (!nombre || !email || !password) {
             return res.status(400).json({ error: 'Todos los campos son obligatorios' });
         }
 
         // Hasheamos la contraseña antes de guardarla
         // El 10 es el nivel de seguridad (salt rounds)
+        // Nunca se guarda la contraseña real, solo el hash
         const password_hash = await bcrypt.hash(password, 10);
 
         // Insertamos el usuario en la base de datos
+        // Si no se elige rol se asigna cliente por defecto
         await pool.query(
-            'INSERT INTO usuarios (nombre, email, password_hash) VALUES (?, ?, ?)',
-            [nombre, email, password_hash]
+            'INSERT INTO usuarios (nombre, email, password_hash, rol) VALUES (?, ?, ?, ?)',
+            [nombre, email, password_hash, rol || 'cliente']
         );
 
         res.status(201).json({ mensaje: 'Usuario registrado correctamente' });
@@ -45,7 +47,7 @@ const register = async (req, res) => {
 // ── LOGIN ────────────────────────────────────────────────────
 // POST /api/auth/login
 // Recibe: email, password
-// Devuelve: token JWT
+// Devuelve: token JWT y datos del usuario
 const login = async (req, res) => {
     try {
         // Extraemos los datos del body
@@ -62,7 +64,8 @@ const login = async (req, res) => {
             [email]
         );
 
-        // Si no existe el usuario
+        // Si no existe el usuario devolvemos error genérico
+        // No decimos si el email o la contraseña es incorrecto por seguridad
         if (rows.length === 0) {
             return res.status(401).json({ error: 'Credenciales incorrectas' });
         }
@@ -79,17 +82,17 @@ const login = async (req, res) => {
         // Generamos el token JWT con los datos del usuario
         // El token expira en 24 horas
         const token = jwt.sign(
-            { 
-                id: usuario.id_usuario, 
+            {
+                id: usuario.id_usuario,
                 email: usuario.email,
-                rol: usuario.rol 
+                rol: usuario.rol
             },
             process.env.JWT_SECRET,
             { expiresIn: '24h' }
         );
 
         // Devolvemos el token y datos básicos del usuario
-        res.status(200).json({ 
+        res.status(200).json({
             token,
             usuario: {
                 id: usuario.id_usuario,
