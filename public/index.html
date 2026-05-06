@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Tickets de Soporte</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ── SECCIÓN LOGIN / REGISTRO ────────────────────────── -->
+    <div id="seccion-auth">
+
+        <!-- Formulario de Login -->
+        <div id="form-login">
+            <h1>🎫 Tickets de Soporte</h1>
+            <h2>Iniciar Sesión</h2>
+            <input type="email" id="login-email" placeholder="Email">
+            <input type="password" id="login-password" placeholder="Contraseña">
+            <button onclick="login()">Ingresar</button>
+            <p>¿No tenés cuenta? <a href="#" onclick="mostrarRegistro()">Registrate</a></p>
+        </div>
+
+        <!-- Formulario de Registro -->
+        <div id="form-registro" style="display:none">
+            <h1>🎫 Tickets de Soporte</h1>
+            <h2>Crear Cuenta</h2>
+            <input type="text" id="reg-nombre" placeholder="Nombre completo">
+            <input type="email" id="reg-email" placeholder="Email">
+            <input type="password" id="reg-password" placeholder="Contraseña">
+            <button onclick="register()">Registrarse</button>
+            <p>¿Ya tenés cuenta? <a href="#" onclick="mostrarLogin()">Iniciá sesión</a></p>
+        </div>
+
+    </div>
+
+    <!-- ── SECCIÓN PRINCIPAL (se muestra después del login) ── -->
+    <div id="seccion-principal" style="display:none">
+
+        <!-- Header -->
+        <header>
+            <h1>🎫 Sistema de Tickets de Soporte</h1>
+            <div>
+                <span id="usuario-nombre"></span>
+                <button onclick="logout()">Cerrar Sesión</button>
+            </div>
+        </header>
+
+        <!-- Mensaje de estado -->
+        <div id="mensaje"></div>
+
+        <!-- Formulario para crear ticket -->
+        <section id="seccion-crear">
+            <h2>Nuevo Ticket</h2>
+            <input type="text" id="ticket-asunto" placeholder="Asunto del ticket">
+            <textarea id="ticket-descripcion" placeholder="Descripción del problema"></textarea>
+            <select id="ticket-categoria">
+                <option value="">Seleccionar categoría</option>
+                <option value="1">Hardware</option>
+                <option value="2">Software</option>
+                <option value="3">Red</option>
+                <option value="4">Acceso</option>
+            </select>
+            <button onclick="crearTicket()">Crear Ticket</button>
+        </section>
+
+        <!-- Lista de tickets -->
+        <section id="seccion-tickets">
+            <h2>Mis Tickets</h2>
+            <table id="tabla-tickets">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Asunto</th>
+                        <th>Categoría</th>
+                        <th>Estado</th>
+                        <th>Cliente</th>
+                        <th>Fecha</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tickets-body">
+                    <!-- Los tickets se cargan acá dinámicamente -->
+                </tbody>
+            </table>
+        </section>
+
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

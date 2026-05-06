@@ -1,0 +1,129 @@
+/* style.css */
+/* Estilos del sistema de tickets de soporte */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #f0f2f5;
+    color: #333;
+}
+
+/* ── SECCIÓN AUTH ───────────────────────────────────────────── */
+
+#seccion-auth {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+#form-login, #form-registro {
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+#form-login h1, #form-registro h1 {
+    text-align: center;
+    color: #1E3A5F;
+    margin-bottom: 8px;
+}
+
+#form-login h2, #form-registro h2 {
+    text-align: center;
+    color: #555;
+    font-weight: normal;
+    margin-bottom: 8px;
+}
+
+/* ── INPUTS ─────────────────────────────────────────────────── */
+
+input, textarea, select {
+    padding: 10px 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    width: 100%;
+}
+
+textarea {
+    height: 80px;
+    resize: vertical;
+}
+
+input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: #2E86C1;
+}
+
+/* ── BOTONES ────────────────────────────────────────────────── */
+
+button {
+    background: #2E86C1;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: bold;
+}
+
+button:hover {
+    background: #1E3A5F;
+}
+
+/* ── HEADER ─────────────────────────────────────────────────── */
+
+header {
+    background: #1E3A5F;
+    color: white;
+    padding: 16px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    font-size: 1.4rem;
+}
+
+header div {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+header button {
+    background: #e74c3c;
+    padding: 8px 16px;
+    font-size: 0.85rem;
+}
+
+/* ── SECCIÓN PRINCIPAL ──────────────────────────────────────── */
+
+#seccion-principal {
+    min-height: 100vh;
+}
+
+#seccion-crear, #seccion-tickets {
+    background: white;
+    margin: 24px auto;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    max-width: 1000px;
+}
+
+#seccion-crear h2, #seccion-
