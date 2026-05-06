@@ -17,6 +17,7 @@
             <h2>Iniciar Sesión</h2>
             <input type="email" id="login-email" placeholder="Email">
             <input type="password" id="login-password" placeholder="Contraseña">
+            <div id="mensaje-auth"></div>
             <button onclick="login()">Ingresar</button>
             <p>¿No tenés cuenta? <a href="#" onclick="mostrarRegistro()">Registrate</a></p>
         </div>
@@ -32,6 +33,7 @@
                 <option value="cliente">Cliente</option>
                 <option value="agente">Agente de Soporte</option>
             </select>
+            <div id="mensaje-auth"></div>
             <button onclick="register()">Registrarse</button>
             <p>¿Ya tenés cuenta? <a href="#" onclick="mostrarLogin()">Iniciá sesión</a></p>
         </div>
@@ -56,8 +58,6 @@
         <!-- Formulario para crear ticket (solo clientes) -->
         <section id="seccion-crear">
             <h2>Nuevo Ticket</h2>
-            <input type="text" id="ticket-asunto" placeholder="Asunto del ticket">
-            <textarea id="ticket-descripcion" placeholder="Descripción del problema"></textarea>
             <select id="ticket-categoria">
                 <option value="">Seleccionar categoría</option>
                 <option value="1">Hardware</option>
@@ -65,28 +65,42 @@
                 <option value="3">Red</option>
                 <option value="4">Acceso</option>
             </select>
+            <input type="text" id="ticket-asunto" placeholder="Asunto del ticket">
+            <textarea id="ticket-descripcion" placeholder="Comentario"></textarea>
             <button onclick="crearTicket()">Crear Ticket</button>
         </section>
 
         <!-- Lista de tickets -->
         <section id="seccion-tickets">
             <h2 id="titulo-tickets">Tickets</h2>
-            <table id="tabla-tickets">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Asunto</th>
-                        <th>Categoría</th>
-                        <th>Estado</th>
-                        <th>Cliente</th>
-                        <th>Fecha</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody id="tickets-body">
-                    <!-- Los tickets se cargan acá dinámicamente -->
-                </tbody>
-            </table>
+
+            <!-- Vista agente: tabla completa -->
+            <div id="vista-agente" style="display:none">
+                <table id="tabla-tickets">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Asunto</th>
+                            <th>Categoría</th>
+                            <th>Estado</th>
+                            <th>Cliente</th>
+                            <th>Fecha</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tickets-body-agente">
+                        <!-- Tickets del agente -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Vista cliente: cards simples -->
+            <div id="vista-cliente" style="display:none">
+                <div id="tickets-body-cliente">
+                    <!-- Cards del cliente -->
+                </div>
+            </div>
+
         </section>
 
     </div>

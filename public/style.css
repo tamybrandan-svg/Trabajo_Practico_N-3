@@ -9,7 +9,7 @@
 
 body {
     font-family: 'Segoe UI', sans-serif;
-    background: #f0f2f5;
+    background: #eef4fb;
     color: #333;
 }
 
@@ -20,51 +20,67 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    padding: 40px 20px;
 }
 
 #form-login, #form-registro {
     background: white;
-    padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 2px 16px rgba(0,0,0,0.1);
+    padding: 48px 44px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
     width: 100%;
-    max-width: 400px;
+    max-width: 440px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 20px;
 }
 
 #form-login h1, #form-registro h1 {
     text-align: center;
-    color: #1E3A5F;
-    margin-bottom: 8px;
+    color: #2E86C1;
+    margin-bottom: 4px;
+    font-size: 1.8rem;
 }
 
 #form-login h2, #form-registro h2 {
     text-align: center;
-    color: #555;
+    color: #666;
     font-weight: normal;
-    margin-bottom: 8px;
+    font-size: 1rem;
+}
+
+#form-login p, #form-registro p {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #666;
 }
 
 /* ── INPUTS ─────────────────────────────────────────────────── */
 
 input, textarea, select {
-    padding: 10px 14px;
-    border: 1px solid #ccc;
+    padding: 13px 16px;
+    border: 1.5px solid #d0e4f5;
     border-radius: 8px;
     font-size: 0.95rem;
     width: 100%;
+    background: #f0f7ff;
+    color: #333;
+    transition: border-color 0.2s, background 0.2s;
 }
 
 textarea {
-    height: 80px;
+    height: 100px;
     resize: vertical;
 }
 
 input:focus, textarea:focus, select:focus {
     outline: none;
     border-color: #2E86C1;
+    background: white;
+}
+
+input::placeholder, textarea::placeholder {
+    color: #90b4d0;
 }
 
 /* ── BOTONES ────────────────────────────────────────────────── */
@@ -73,26 +89,28 @@ button {
     background: #2E86C1;
     color: white;
     border: none;
-    padding: 10px 20px;
+    padding: 13px 20px;
     border-radius: 8px;
     cursor: pointer;
     font-size: 0.95rem;
     font-weight: bold;
+    transition: background 0.2s;
 }
 
 button:hover {
-    background: #1E3A5F;
+    background: #1a6fa8;
 }
 
 /* ── HEADER ─────────────────────────────────────────────────── */
 
 header {
-    background: #1E3A5F;
+    background: #2E86C1;
     color: white;
     padding: 16px 32px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 header h1 {
@@ -111,6 +129,50 @@ header button {
     font-size: 0.85rem;
 }
 
+header button:hover {
+    background: #c0392b;
+}
+
+/* ── HEADER ─────────────────────────────────────────────────── */
+
+header {
+    background: #2E86C1;
+    color: white;
+    padding: 16px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+header h1 {
+    font-size: 1.4rem;
+}
+
+header div {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+header button {
+    background: #e74c3c;
+    padding: 8px 16px;
+    font-size: 0.85rem;
+}
+
+header button:hover {
+    background: #c0392b;
+}
+
+/* Nombre del usuario en el header */
+#usuario-nombre {
+    color: white;
+    font-size: 0.95rem;
+}
+
+
+
 /* ── SECCIÓN PRINCIPAL ──────────────────────────────────────── */
 
 #seccion-principal {
@@ -120,10 +182,166 @@ header button {
 #seccion-crear, #seccion-tickets {
     background: white;
     margin: 24px auto;
-    padding: 24px;
+    padding: 28px;
     border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    max-width: 1000px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    max-width: 800px;
 }
 
-#seccion-crear h2, #seccion-
+#seccion-crear h2, #seccion-tickets h2 {
+    color: #2E86C1;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+}
+
+#seccion-crear {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+/* ── TABLA AGENTE ───────────────────────────────────────────── */
+
+#tabla-tickets {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#tabla-tickets th {
+    background: #2E86C1;
+    color: white;
+    padding: 12px;
+    text-align: left;
+    font-size: 0.9rem;
+}
+
+#tabla-tickets td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #eef4fb;
+    font-size: 0.9rem;
+}
+
+#tabla-tickets tr:hover {
+    background: #f0f7ff;
+}
+
+#tabla-tickets select {
+    padding: 6px 10px;
+    font-size: 0.85rem;
+    margin-bottom: 6px;
+}
+
+#tabla-tickets button {
+    background: #2E86C1;
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    width: 100%;
+}
+
+/* ── LISTA CLIENTE ──────────────────────────────────────────── */
+
+.ticket-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px;
+    border: 1.5px solid #d0e4f5;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    background: #f0f7ff;
+    transition: box-shadow 0.2s;
+}
+
+.ticket-card:hover {
+    box-shadow: 0 2px 8px rgba(46,134,193,0.1);
+    background: white;
+}
+
+.ticket-card-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.ticket-numero {
+    background: #2E86C1;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.ticket-asunto {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #333;
+}
+
+.ticket-card button {
+    background: #e74c3c;
+    padding: 6px 14px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+}
+
+.ticket-card button:hover {
+    background: #c0392b;
+}
+
+/* ── ESTADOS ────────────────────────────────────────────────── */
+
+.estado {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.estado-nuevo {
+    background: #d5f5e3;
+    color: #1e8449;
+}
+
+.estado-en_progreso {
+    background: #fef9e7;
+    color: #d4ac0d;
+}
+
+.estado-cerrado {
+    background: #fadbd8;
+    color: #922b21;
+}
+
+/* ── MENSAJES ───────────────────────────────────────────────── */
+
+#mensaje {
+    max-width: 800px;
+    margin: 16px auto 0;
+    padding: 12px 16px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 0.95rem;
+}
+
+.mensaje-ok {
+    background: #d5f5e3;
+    color: #1e8449;
+}
+
+.mensaje-error {
+    background: #fadbd8;
+    color: #922b21;
+}
+
+/* ── LINKS ──────────────────────────────────────────────────── */
+
+a {
+    color: #2E86C1;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}

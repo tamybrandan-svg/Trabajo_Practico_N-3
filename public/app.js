@@ -1,30 +1,33 @@
 // public/app.js
-// Lógica del frontend
-// Se comunica con la API usando fetch()
-// Guarda el token JWT en localStorage para enviarlo en cada petición
-
 const API_URL = '/api';
 
 // ── UTILIDADES ───────────────────────────────────────────────
 
-// Muestra un mensaje de éxito o error en pantalla
 function mostrarMensaje(texto, esError = false) {
     const el = document.getElementById('mensaje');
+    if (!el) return;
     el.textContent = texto;
     el.className = esError ? 'mensaje-error' : 'mensaje-ok';
     setTimeout(() => { el.textContent = ''; el.className = ''; }, 3000);
 }
 
-// Muestra el formulario de registro y oculta el login
-function mostrarRegistro() {
-    document.getElementById('form-login').style.display = 'none';
-    document.getElementById('form-registro').style.display = 'block';
+function mostrarMensajeAuth(texto, esError = false) {
+    const els = document.querySelectorAll('#mensaje-auth');
+    els.forEach(el => {
+        el.textContent = texto;
+        el.className = esError ? 'mensaje-error' : 'mensaje-ok';
+        setTimeout(() => { el.textContent = ''; el.className = ''; }, 3000);
+    });
 }
 
-// Muestra el formulario de login y oculta el registro
+function mostrarRegistro() {
+    document.getElementById('form-login').style.display = 'none';
+    document.getElementById('form-registro').style.display = 'flex';
+}
+
 function mostrarLogin() {
     document.getElementById('form-registro').style.display = 'none';
-    document.getElementById('form-login').style.display = 'block';
+    document.getElementById('form-login').style.display = 'flex';
 }
 
 // ── AUTENTICACIÓN ────────────────────────────────────────────
@@ -38,7 +41,7 @@ async function register() {
     const rol = document.getElementById('reg-rol').value;
 
     if (!nombre || !email || !password) {
-        return mostrarMensaje('Todos los campos son obligatorios', true);
+        return mostrarMensajeAuth('Todos los campos son obligatorios', true);
     }
 
     try {
@@ -51,14 +54,14 @@ async function register() {
         const data = await response.json();
 
         if (!response.ok) {
-            return mostrarMensaje(data.error, true);
+            return mostrarMensajeAuth(data.error, true);
         }
 
-        mostrarMensaje('Usuario registrado correctamente. Iniciá sesión.');
+        mostrarMensajeAuth('Usuario registrado correctamente. Iniciá sesión.');
         mostrarLogin();
 
     } catch (error) {
-        mostrarMensaje('Error al registrar usuario', true);
+        mostrarMensajeAuth('Error al registrar usuario', true);
     }
 }
 
@@ -69,7 +72,7 @@ async function login() {
     const password = document.getElementById('login-password').value;
 
     if (!email || !password) {
-        return mostrarMensaje('Email y contraseña son obligatorios', true);
+        return mostrarMensajeAuth('Email y contraseña son obligatorios', true);
     }
 
     try {
@@ -82,18 +85,16 @@ async function login() {
         const data = await response.json();
 
         if (!response.ok) {
-            return mostrarMensaje(data.error, true);
+            return mostrarMensajeAuth(data.error, true);
         }
 
         // Guardamos el token y datos del usuario en localStorage
         localStorage.setItem('token', data.token);
         localStorage.setItem('usuario', JSON.stringify(data.usuario));
-
-        // Mostramos la sección principal
         mostrarSeccionPrincipal(data.usuario);
 
     } catch (error) {
-        mostrarMensaje('Error al iniciar sesión', true);
+        mostrarMensajeAuth('Error al iniciar sesión', true);
     }
 }
 
@@ -101,8 +102,9 @@ async function login() {
 function logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('usuario');
-    document.getElementById('seccion-auth').style.display = 'block';
     document.getElementById('seccion-principal').style.display = 'none';
+    document.getElementById('seccion-auth').style.display = 'flex';
+    mostrarLogin();
 }
 
 // Muestra la sección principal después del login
@@ -114,12 +116,14 @@ function mostrarSeccionPrincipal(usuario) {
     document.getElementById('usuario-nombre').textContent = `👤 ${usuario.nombre} (${usuario.rol})`;
 
     if (usuario.rol === 'agente') {
-        // El agente no crea tickets, solo los gestiona
         document.getElementById('seccion-crear').style.display = 'none';
+        document.getElementById('vista-agente').style.display = 'block';
+        document.getElementById('vista-cliente').style.display = 'none';
         document.getElementById('titulo-tickets').textContent = 'Todos los Tickets';
     } else {
-        // El cliente puede crear tickets
         document.getElementById('seccion-crear').style.display = 'flex';
+        document.getElementById('vista-agente').style.display = 'none';
+        document.getElementById('vista-cliente').style.display = 'block';
         document.getElementById('titulo-tickets').textContent = 'Mis Tickets';
     }
 
@@ -138,9 +142,7 @@ function getHeaders() {
 }
 
 // GET /api/tickets
-// Carga todos los tickets y los muestra en la tabla
-// Si es agente muestra opciones de gestión
-// Si es cliente muestra botón de eliminar
+// Carga todos los tickets y los muestra según el rol
 async function cargarTickets() {
     try {
         const usuario = JSON.parse(localStorage.getItem('usuario'));
@@ -151,38 +153,60 @@ async function cargarTickets() {
         });
 
         const tickets = await response.json();
-        const tbody = document.getElementById('tickets-body');
-        tbody.innerHTML = '';
 
-        if (tickets.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="7">No hay tickets todavía</td></tr>';
-            return;
-        }
+        if (esAgente) {
+            // ── Vista agente: tabla completa ──
+            const tbody = document.getElementById('tickets-body-agente');
+            tbody.innerHTML = '';
 
-        tickets.forEach(ticket => {
-            const fila = document.createElement('tr');
-            fila.innerHTML = `
-                <td>#${ticket.id_ticket}</td>
-                <td>${ticket.asunto}</td>
-                <td>${ticket.categoria}</td>
-                <td><span class="estado estado-${ticket.estado}">${ticket.estado}</span></td>
-                <td>${ticket.cliente}</td>
-                <td>${new Date(ticket.fecha_creacion).toLocaleDateString()}</td>
-                <td>
-                    ${esAgente ? `
+            if (tickets.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7">No hay tickets todavía</td></tr>';
+                return;
+            }
+
+            tickets.forEach(ticket => {
+                const fila = document.createElement('tr');
+                fila.innerHTML = `
+                    <td>#${ticket.id_ticket}</td>
+                    <td>${ticket.asunto}</td>
+                    <td>${ticket.categoria}</td>
+                    <td><span class="estado estado-${ticket.estado}">${ticket.estado}</span></td>
+                    <td>${ticket.cliente}</td>
+                    <td>${new Date(ticket.fecha_creacion).toLocaleDateString()}</td>
+                    <td>
                         <select onchange="cambiarEstado(${ticket.id_ticket}, this.value, '${ticket.asunto}')">
                             <option value="nuevo" ${ticket.estado === 'nuevo' ? 'selected' : ''}>Nuevo</option>
                             <option value="en_progreso" ${ticket.estado === 'en_progreso' ? 'selected' : ''}>En Progreso</option>
                             <option value="cerrado" ${ticket.estado === 'cerrado' ? 'selected' : ''}>Cerrado</option>
                         </select>
-                        <button onclick="asignarme(${ticket.id_ticket}, '${ticket.asunto}')">📋 Asignarme</button>
-                    ` : `
-                        <button onclick="eliminarTicket(${ticket.id_ticket})">🗑 Eliminar</button>
-                    `}
-                </td>
-            `;
-            tbody.appendChild(fila);
-        });
+                    </td>
+                `;
+                tbody.appendChild(fila);
+            });
+
+        } else {
+            // ── Vista cliente: cards simples ──
+            const container = document.getElementById('tickets-body-cliente');
+            container.innerHTML = '';
+
+            if (tickets.length === 0) {
+                container.innerHTML = '<p>No tenés tickets todavía</p>';
+                return;
+            }
+
+            tickets.forEach(ticket => {
+                const card = document.createElement('div');
+                card.className = 'ticket-card';
+                card.innerHTML = `
+                    <div class="ticket-card-info">
+                        <span class="ticket-numero">Turno #${ticket.id_ticket}</span>
+                        <span class="ticket-asunto">${ticket.asunto}</span>
+                    </div>
+                    <button onclick="eliminarTicket(${ticket.id_ticket})">🗑 Eliminar</button>
+                `;
+                container.appendChild(card);
+            });
+        }
 
     } catch (error) {
         mostrarMensaje('Error al cargar tickets', true);
@@ -214,12 +238,9 @@ async function crearTicket() {
         }
 
         mostrarMensaje('Ticket creado correctamente');
-
-        // Limpiamos el formulario
         document.getElementById('ticket-asunto').value = '';
         document.getElementById('ticket-descripcion').value = '';
         document.getElementById('ticket-categoria').value = '';
-
         cargarTickets();
 
     } catch (error) {
@@ -258,36 +279,6 @@ async function cambiarEstado(id, estado, asunto) {
     }
 }
 
-// PUT /api/tickets/:id
-// El agente se asigna a un ticket y lo pasa a en_progreso
-async function asignarme(id, asunto) {
-    try {
-        const usuario = JSON.parse(localStorage.getItem('usuario'));
-
-        const response = await fetch(`${API_URL}/tickets/${id}`, {
-            method: 'PUT',
-            headers: getHeaders(),
-            body: JSON.stringify({
-                asunto,
-                estado: 'en_progreso',
-                id_agente: usuario.id
-            })
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            return mostrarMensaje(data.error, true);
-        }
-
-        mostrarMensaje('Te asignaste al ticket correctamente');
-        cargarTickets();
-
-    } catch (error) {
-        mostrarMensaje('Error al asignarse al ticket', true);
-    }
-}
-
 // DELETE /api/tickets/:id
 // Elimina un ticket con transacción en el backend
 async function eliminarTicket(id) {
@@ -319,7 +310,6 @@ window.onload = () => {
     const token = localStorage.getItem('token');
     const usuario = JSON.parse(localStorage.getItem('usuario'));
 
-    // Si hay token guardado mostramos directo la sección principal
     if (token && usuario) {
         mostrarSeccionPrincipal(usuario);
     }

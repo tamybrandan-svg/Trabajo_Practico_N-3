@@ -67,7 +67,7 @@ const login = async (req, res) => {
         // Si no existe el usuario devolvemos error genérico
         // No decimos si el email o la contraseña es incorrecto por seguridad
         if (rows.length === 0) {
-            return res.status(401).json({ error: 'Credenciales incorrectas' });
+            return res.status(401).json({ error: 'Contraseña incorrectas' });
         }
 
         const usuario = rows[0];
@@ -76,7 +76,7 @@ const login = async (req, res) => {
         const passwordValida = await bcrypt.compare(password, usuario.password_hash);
 
         if (!passwordValida) {
-            return res.status(401).json({ error: 'Credenciales incorrectas' });
+            return res.status(401).json({ error: 'Contraseña incorrectas' });
         }
 
         // Generamos el token JWT con los datos del usuario
