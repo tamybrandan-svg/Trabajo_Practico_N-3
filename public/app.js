@@ -108,8 +108,6 @@ function logout() {
 }
 
 // Muestra la sección principal después del login
-// Si es agente oculta el formulario de crear ticket
-// Si es cliente muestra el formulario de crear ticket
 function mostrarSeccionPrincipal(usuario) {
     document.getElementById('seccion-auth').style.display = 'none';
     document.getElementById('seccion-principal').style.display = 'block';
@@ -155,7 +153,7 @@ async function cargarTickets() {
         const tickets = await response.json();
 
         if (esAgente) {
-            // ── Vista agente: tabla completa ──
+            // ── Vista agente: tabla completa con detalle al clickear ──
             const tbody = document.getElementById('tickets-body-agente');
             tbody.innerHTML = '';
 
@@ -166,13 +164,15 @@ async function cargarTickets() {
 
             tickets.forEach(ticket => {
                 const fila = document.createElement('tr');
+                fila.id = `fila-${ticket.id_ticket}`;
+                fila.style.cursor = 'pointer';
                 fila.innerHTML = `
-                    <td>#${ticket.id_ticket}</td>
-                    <td>${ticket.asunto}</td>
-                    <td>${ticket.categoria}</td>
-                    <td><span class="estado estado-${ticket.estado}">${ticket.estado}</span></td>
-                    <td>${ticket.cliente}</td>
-                    <td>${new Date(ticket.fecha_creacion).toLocaleDateString()}</td>
+                    <td onclick="verDetalles(${ticket.id_ticket})">#${ticket.id_ticket}</td>
+                    <td onclick="verDetalles(${ticket.id_ticket})">${ticket.asunto}</td>
+                    <td onclick="verDetalles(${ticket.id_ticket})">${ticket.categoria}</td>
+                    <td onclick="verDetalles(${ticket.id_ticket})"><span class="estado estado-${ticket.estado}">${ticket.estado}</span></td>
+                    <td onclick="verDetalles(${ticket.id_ticket})">${ticket.cliente}</td>
+                    <td onclick="verDetalles(${ticket.id_ticket})">${new Date(ticket.fecha_creacion).toLocaleDateString()}</td>
                     <td>
                         <select onchange="cambiarEstado(${ticket.id_ticket}, this.value, '${ticket.asunto}')">
                             <option value="nuevo" ${ticket.estado === 'nuevo' ? 'selected' : ''}>Nuevo</option>
@@ -210,6 +210,53 @@ async function cargarTickets() {
 
     } catch (error) {
         mostrarMensaje('Error al cargar tickets', true);
+    }
+}
+
+// GET /api/tickets/:id
+// Muestra el detalle y comentarios del ticket al clickear una fila
+async function verDetalles(id) {
+    // Si ya está abierto lo cerramos
+    const existente = document.getElementById(`detalle-${id}`);
+    if (existente) {
+        existente.remove();
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_URL}/tickets/${id}`, {
+            headers: getHeaders()
+        });
+
+        const data = await response.json();
+
+        const filaDetalle = document.createElement('tr');
+        filaDetalle.id = `detalle-${id}`;
+        filaDetalle.innerHTML = `
+            <td colspan="7">
+                <div class="detalle-ticket">
+                    <h4>💬 Detalle del problema</h4>
+                    <p class="ticket-descripcion-detalle">${data.descripcion}</p>
+                    ${data.comentarios.length > 1
+                        ? `<h4 style="margin-top:12px">📝 Comentarios</h4>
+                           ${data.comentarios.slice(1).map(c => `
+                            <div class="comentario">
+                                <span class="comentario-usuario">👤 ${c.usuario}</span>
+                                <span class="comentario-fecha">${new Date(c.fecha).toLocaleString()}</span>
+                                <p class="comentario-mensaje">${c.mensaje}</p>
+                            </div>
+                        `).join('')}`
+                        : ''
+                    }
+                </div>
+            </td>
+        `;
+
+        const filaTicket = document.getElementById(`fila-${id}`);
+        filaTicket.insertAdjacentElement('afterend', filaDetalle);
+
+    } catch (error) {
+        mostrarMensaje('Error al cargar detalles', true);
     }
 }
 

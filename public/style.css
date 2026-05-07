@@ -38,7 +38,6 @@ body {
 #form-login h1, #form-registro h1 {
     text-align: center;
     color: #2E86C1;
-    margin-bottom: 4px;
     font-size: 1.8rem;
 }
 
@@ -133,45 +132,10 @@ header button:hover {
     background: #c0392b;
 }
 
-/* ── HEADER ─────────────────────────────────────────────────── */
-
-header {
-    background: #2E86C1;
-    color: white;
-    padding: 16px 32px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
-header h1 {
-    font-size: 1.4rem;
-}
-
-header div {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-}
-
-header button {
-    background: #e74c3c;
-    padding: 8px 16px;
-    font-size: 0.85rem;
-}
-
-header button:hover {
-    background: #c0392b;
-}
-
-/* Nombre del usuario en el header */
 #usuario-nombre {
     color: white;
     font-size: 0.95rem;
 }
-
-
 
 /* ── SECCIÓN PRINCIPAL ──────────────────────────────────────── */
 
@@ -185,7 +149,7 @@ header button:hover {
     padding: 28px;
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-    max-width: 800px;
+    max-width: 900px;
 }
 
 #seccion-crear h2, #seccion-tickets h2 {
@@ -228,14 +192,59 @@ header button:hover {
 #tabla-tickets select {
     padding: 6px 10px;
     font-size: 0.85rem;
-    margin-bottom: 6px;
+    background: #f0f7ff;
+    border: 1.5px solid #d0e4f5;
+    border-radius: 6px;
 }
 
-#tabla-tickets button {
-    background: #2E86C1;
-    padding: 6px 12px;
+/* ── DETALLE TICKET ─────────────────────────────────────────── */
+
+.detalle-ticket {
+    background: #f0f7ff;
+    padding: 16px 20px;
+    border-radius: 8px;
+    margin: 4px 0;
+}
+
+.detalle-ticket h4 {
+    color: #2E86C1;
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+}
+
+.ticket-descripcion-detalle {
+    background: white;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border-left: 3px solid #2E86C1;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.comentario {
+    background: white;
+    padding: 10px 14px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    border-left: 3px solid #2E86C1;
+}
+
+.comentario-usuario {
+    font-weight: bold;
+    font-size: 0.85rem;
+    color: #1E3A5F;
+}
+
+.comentario-fecha {
     font-size: 0.8rem;
-    width: 100%;
+    color: #999;
+    margin-left: 8px;
+}
+
+.comentario-mensaje {
+    margin-top: 6px;
+    font-size: 0.9rem;
+    color: #333;
 }
 
 /* ── LISTA CLIENTE ──────────────────────────────────────────── */
@@ -317,12 +326,19 @@ header button:hover {
 /* ── MENSAJES ───────────────────────────────────────────────── */
 
 #mensaje {
-    max-width: 800px;
+    max-width: 900px;
     margin: 16px auto 0;
     padding: 12px 16px;
     border-radius: 8px;
     text-align: center;
     font-size: 0.95rem;
+}
+
+#mensaje-auth {
+    padding: 10px 14px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 0.9rem;
 }
 
 .mensaje-ok {
