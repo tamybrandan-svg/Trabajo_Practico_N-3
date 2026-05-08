@@ -13,7 +13,7 @@ body {
     color: #333;
 }
 
-/* ── SECCIÓN AUTH ───────────────────────────────────────────── */
+/* ── AUTH ───────────────────────────────────────────────────── */
 
 #seccion-auth {
     display: flex;
@@ -29,46 +29,52 @@ body {
     border-radius: 16px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.08);
     width: 100%;
-    max-width: 440px;
+    max-width: 420px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 16px;
+}
+
+.auth-logo {
+    text-align: center;
+    font-size: 2.5rem;
 }
 
 #form-login h1, #form-registro h1 {
     text-align: center;
     color: #2E86C1;
-    font-size: 1.8rem;
+    font-size: 1.5rem;
+    font-weight: 600;
 }
 
 #form-login h2, #form-registro h2 {
     text-align: center;
-    color: #666;
+    color: #888;
     font-weight: normal;
-    font-size: 1rem;
+    font-size: 0.95rem;
 }
 
 #form-login p, #form-registro p {
     text-align: center;
-    font-size: 0.9rem;
-    color: #666;
+    font-size: 0.88rem;
+    color: #888;
 }
 
 /* ── INPUTS ─────────────────────────────────────────────────── */
 
 input, textarea, select {
-    padding: 13px 16px;
+    padding: 11px 14px;
     border: 1.5px solid #d0e4f5;
     border-radius: 8px;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     width: 100%;
-    background: #f0f7ff;
+    background: #f5f9fe;
     color: #333;
     transition: border-color 0.2s, background 0.2s;
 }
 
 textarea {
-    height: 100px;
+    height: 80px;
     resize: vertical;
 }
 
@@ -79,7 +85,7 @@ input:focus, textarea:focus, select:focus {
 }
 
 input::placeholder, textarea::placeholder {
-    color: #90b4d0;
+    color: #aac4d8;
 }
 
 /* ── BOTONES ────────────────────────────────────────────────── */
@@ -88,11 +94,11 @@ button {
     background: #2E86C1;
     color: white;
     border: none;
-    padding: 13px 20px;
+    padding: 11px 20px;
     border-radius: 8px;
     cursor: pointer;
-    font-size: 0.95rem;
-    font-weight: bold;
+    font-size: 0.9rem;
+    font-weight: 600;
     transition: background 0.2s;
 }
 
@@ -100,256 +106,422 @@ button:hover {
     background: #1a6fa8;
 }
 
+.btn-crear {
+    align-self: flex-start;
+    padding: 9px 20px;
+    font-size: 0.88rem;
+    margin-top: 4px;
+}
+
 /* ── HEADER ─────────────────────────────────────────────────── */
 
 header {
     background: #2E86C1;
-    color: white;
-    padding: 16px 32px;
+    padding: 12px 28px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-header h1 {
-    font-size: 1.4rem;
+.header-logo {
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    background: rgba(255,255,255,0.15);
+    padding: 6px 14px;
+    border-radius: 8px;
 }
 
-header div {
+.header-right {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 12px;
 }
 
-header button {
-    background: #e74c3c;
-    padding: 8px 16px;
-    font-size: 0.85rem;
+.user-chip {
+    background: rgba(255,255,255,0.15);
+    border-radius: 20px;
+    padding: 5px 14px 5px 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: white;
+    font-size: 0.88rem;
 }
 
-header button:hover {
+.avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: white;
+}
+
+.btn-logout {
+    background: rgba(231,76,60,0.85);
+    padding: 7px 14px;
+    font-size: 0.82rem;
+    border-radius: 8px;
+}
+
+.btn-logout:hover {
     background: #c0392b;
 }
 
-#usuario-nombre {
-    color: white;
-    font-size: 0.95rem;
+/* ── CONTENIDO ──────────────────────────────────────────────── */
+
+.content {
+    padding: 24px 28px;
+    max-width: 1000px;
+    margin: 0 auto;
 }
 
-/* ── SECCIÓN PRINCIPAL ──────────────────────────────────────── */
-
-#seccion-principal {
-    min-height: 100vh;
-}
-
-#seccion-crear, #seccion-tickets {
-    background: white;
-    margin: 24px auto;
-    padding: 28px;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-    max-width: 900px;
-}
-
-#seccion-crear h2, #seccion-tickets h2 {
-    color: #2E86C1;
+.greeting {
     margin-bottom: 20px;
-    font-size: 1.2rem;
 }
 
-#seccion-crear {
+.greeting h2 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #1a1a2e;
+}
+
+.greeting p {
+    font-size: 0.88rem;
+    color: #888;
+    margin-top: 3px;
+}
+
+/* ── TARJETAS ESTADÍSTICAS ──────────────────────────────────── */
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.stat-card {
+    background: white;
+    border: 0.5px solid #dce8f5;
+    border-radius: 12px;
+    padding: 14px 16px;
     display: flex;
-    flex-direction: column;
-    gap: 14px;
+    align-items: center;
+    gap: 12px;
+}
+
+.stat-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.stat-icon.blue  { background: #e6f1fb; }
+.stat-icon.green { background: #eaf3de; }
+.stat-icon.amber { background: #faeeda; }
+.stat-icon.red   { background: #fcebeb; }
+
+.stat-info p {
+    font-size: 11px;
+    color: #999;
+    margin-bottom: 2px;
+}
+
+.stat-info h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #1a1a2e;
+}
+
+/* ── SECCIÓN TICKETS ────────────────────────────────────────── */
+
+#seccion-tickets {
+    background: white;
+    border: 0.5px solid #dce8f5;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.section-header {
+    padding: 16px 20px;
+    border-bottom: 0.5px solid #dce8f5;
+}
+
+.section-header h3 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #1a1a2e;
 }
 
 /* ── TABLA AGENTE ───────────────────────────────────────────── */
 
-#tabla-tickets {
+.table-wrap {
     width: 100%;
-    border-collapse: collapse;
 }
 
-#tabla-tickets th {
-    background: #2E86C1;
-    color: white;
-    padding: 12px;
-    text-align: left;
-    font-size: 0.9rem;
+.table-head {
+    display: grid;
+    grid-template-columns: 60px 1fr 100px 110px 120px 100px 90px;
+    padding: 10px 20px;
+    background: #f5f9fe;
+    font-size: 11px;
+    color: #999;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 0.5px solid #dce8f5;
 }
 
-#tabla-tickets td {
-    padding: 10px 12px;
-    border-bottom: 1px solid #eef4fb;
-    font-size: 0.9rem;
+.table-row {
+    display: grid;
+    grid-template-columns: 60px 1fr 100px 110px 120px 100px 90px;
+    padding: 11px 20px;
+    border-bottom: 0.5px solid #f0f4f8;
+    font-size: 0.88rem;
+    color: #333;
+    align-items: center;
+    cursor: pointer;
+    transition: background 0.15s;
 }
 
-#tabla-tickets tr:hover {
-    background: #f0f7ff;
+.table-row:hover {
+    background: #f5f9fe;
 }
 
-#tabla-tickets select {
-    padding: 6px 10px;
-    font-size: 0.85rem;
-    background: #f0f7ff;
-    border: 1.5px solid #d0e4f5;
+.table-row:last-child {
+    border-bottom: none;
+}
+
+.id-cell {
+    color: #2E86C1;
+    font-weight: 600;
+}
+
+/* ── BADGES CATEGORÍA ───────────────────────────────────────── */
+
+.badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.badge-red      { background: #e6f1fb; color: #185FA5; }
+.badge-software { background: #eaf3de; color: #3B6D11; }
+.badge-acceso   { background: #faeeda; color: #854F0B; }
+.badge-hardware { background: #fbeaf0; color: #993556; }
+
+/* ── ESTADOS ────────────────────────────────────────────────── */
+
+.estado {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.estado-nuevo       { background: #eaf3de; color: #3B6D11; }
+.estado-en_progreso { background: #faeeda; color: #854F0B; }
+.estado-cerrado     { background: #fcebeb; color: #A32D2D; }
+
+/* ── SELECT ESTADO AGENTE ───────────────────────────────────── */
+
+.select-estado {
+    border: 0.5px solid #d0e4f5;
     border-radius: 6px;
+    padding: 4px 8px;
+    font-size: 11px;
+    background: #f5f9fe;
+    color: #333;
+    cursor: pointer;
+    width: 100%;
 }
 
-/* ── DETALLE TICKET ─────────────────────────────────────────── */
+/* ── DETALLE EXPANDIBLE ─────────────────────────────────────── */
+
+.fila-detalle td {
+    padding: 0 20px 12px;
+}
 
 .detalle-ticket {
     background: #f0f7ff;
-    padding: 16px 20px;
-    border-radius: 8px;
-    margin: 4px 0;
+    border-left: 3px solid #2E86C1;
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
 }
 
 .detalle-ticket h4 {
+    font-size: 0.82rem;
     color: #2E86C1;
-    margin-bottom: 12px;
-    font-size: 0.95rem;
+    margin-bottom: 8px;
+    font-weight: 600;
 }
 
 .ticket-descripcion-detalle {
-    background: white;
-    padding: 10px 14px;
-    border-radius: 8px;
-    border-left: 3px solid #2E86C1;
-    font-size: 0.9rem;
-    color: #333;
+    font-size: 0.88rem;
+    color: #444;
+    line-height: 1.5;
 }
 
 .comentario {
     background: white;
-    padding: 10px 14px;
-    border-radius: 8px;
-    margin-bottom: 8px;
-    border-left: 3px solid #2E86C1;
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin-top: 8px;
+    border-left: 2px solid #2E86C1;
 }
 
 .comentario-usuario {
-    font-weight: bold;
-    font-size: 0.85rem;
+    font-weight: 600;
+    font-size: 0.8rem;
     color: #1E3A5F;
 }
 
 .comentario-fecha {
-    font-size: 0.8rem;
-    color: #999;
-    margin-left: 8px;
+    font-size: 0.75rem;
+    color: #aaa;
+    margin-left: 6px;
 }
 
 .comentario-mensaje {
-    margin-top: 6px;
-    font-size: 0.9rem;
-    color: #333;
+    margin-top: 4px;
+    font-size: 0.85rem;
+    color: #444;
 }
 
-/* ── LISTA CLIENTE ──────────────────────────────────────────── */
+/* ── FORMULARIO CLIENTE ─────────────────────────────────────── */
+
+.form-section {
+    background: white;
+    border: 0.5px solid #dce8f5;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.form-section h3 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #1a1a2e;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.form-field label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+/* ── CARDS CLIENTE ──────────────────────────────────────────── */
+
+#tickets-body-cliente {
+    padding: 12px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
 
 .ticket-card {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 14px 18px;
-    border: 1.5px solid #d0e4f5;
+    padding: 12px 16px;
+    border: 0.5px solid #dce8f5;
     border-radius: 10px;
-    margin-bottom: 10px;
-    background: #f0f7ff;
-    transition: box-shadow 0.2s;
+    background: #f5f9fe;
+    transition: box-shadow 0.2s, background 0.2s;
 }
 
 .ticket-card:hover {
-    box-shadow: 0 2px 8px rgba(46,134,193,0.1);
     background: white;
+    box-shadow: 0 2px 8px rgba(46,134,193,0.08);
 }
 
 .ticket-card-info {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 12px;
 }
 
 .ticket-numero {
     background: #2E86C1;
     color: white;
-    padding: 6px 12px;
+    padding: 4px 12px;
     border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: bold;
+    font-size: 12px;
+    font-weight: 600;
     white-space: nowrap;
 }
 
 .ticket-asunto {
-    font-size: 0.95rem;
-    font-weight: 500;
+    font-size: 0.9rem;
     color: #333;
+    font-weight: 500;
 }
 
-.ticket-card button {
+.ticket-card .btn-eliminar {
     background: #e74c3c;
-    padding: 6px 14px;
+    padding: 5px 12px;
     font-size: 0.8rem;
-    white-space: nowrap;
+    border-radius: 6px;
+    font-weight: 500;
 }
 
-.ticket-card button:hover {
+.ticket-card .btn-eliminar:hover {
     background: #c0392b;
-}
-
-/* ── ESTADOS ────────────────────────────────────────────────── */
-
-.estado {
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: bold;
-}
-
-.estado-nuevo {
-    background: #d5f5e3;
-    color: #1e8449;
-}
-
-.estado-en_progreso {
-    background: #fef9e7;
-    color: #d4ac0d;
-}
-
-.estado-cerrado {
-    background: #fadbd8;
-    color: #922b21;
 }
 
 /* ── MENSAJES ───────────────────────────────────────────────── */
 
 #mensaje {
-    max-width: 900px;
-    margin: 16px auto 0;
-    padding: 12px 16px;
-    border-radius: 8px;
-    text-align: center;
-    font-size: 0.95rem;
-}
-
-#mensaje-auth {
     padding: 10px 14px;
     border-radius: 8px;
     text-align: center;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
+    margin-bottom: 16px;
+    min-height: 8px;
 }
 
-.mensaje-ok {
-    background: #d5f5e3;
-    color: #1e8449;
+#mensaje-auth {
+    padding: 8px 12px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 0.85rem;
+    min-height: 8px;
 }
 
-.mensaje-error {
-    background: #fadbd8;
-    color: #922b21;
-}
+.mensaje-ok    { background: #eaf3de; color: #3B6D11; }
+.mensaje-error { background: #fcebeb; color: #A32D2D; }
 
 /* ── LINKS ──────────────────────────────────────────────────── */
 

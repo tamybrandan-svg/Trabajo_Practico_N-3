@@ -13,7 +13,8 @@
 
         <!-- Formulario de Login -->
         <div id="form-login">
-            <h1>🎫 Tickets de Soporte</h1>
+            <div class="auth-logo">🎫</div>
+            <h1>Tickets de Soporte</h1>
             <h2>Iniciar Sesión</h2>
             <input type="email" id="login-email" placeholder="Email">
             <input type="password" id="login-password" placeholder="Contraseña">
@@ -24,7 +25,8 @@
 
         <!-- Formulario de Registro -->
         <div id="form-registro" style="display:none">
-            <h1>🎫 Tickets de Soporte</h1>
+            <div class="auth-logo">🎫</div>
+            <h1>Tickets de Soporte</h1>
             <h2>Crear Cuenta</h2>
             <input type="text" id="reg-nombre" placeholder="Nombre completo">
             <input type="email" id="reg-email" placeholder="Email">
@@ -40,69 +42,124 @@
 
     </div>
 
-    <!-- ── SECCIÓN PRINCIPAL (se muestra después del login) ── -->
+    <!-- ── SECCIÓN PRINCIPAL ─────────────────────────────────── -->
     <div id="seccion-principal" style="display:none">
 
         <!-- Header -->
         <header>
-            <h1>🎫 Sistema de Tickets de Soporte</h1>
-            <div>
-                <span id="usuario-nombre"></span>
-                <button onclick="logout()">Cerrar Sesión</button>
+            <div class="header-logo">🎫 Tickets de Soporte</div>
+            <div class="header-right">
+                <div class="user-chip">
+                    <div class="avatar" id="usuario-avatar"></div>
+                    <span id="usuario-nombre"></span>
+                </div>
+                <button class="btn-logout" onclick="logout()">Cerrar sesión</button>
             </div>
         </header>
 
-        <!-- Mensaje de estado -->
-        <div id="mensaje"></div>
+        <!-- Contenido principal -->
+        <div class="content">
 
-        <!-- Formulario para crear ticket (solo clientes) -->
-        <section id="seccion-crear">
-            <h2>Nuevo Ticket</h2>
-            <select id="ticket-categoria">
-                <option value="">Seleccionar categoría</option>
-                <option value="1">Hardware</option>
-                <option value="2">Software</option>
-                <option value="3">Red</option>
-                <option value="4">Acceso</option>
-            </select>
-            <input type="text" id="ticket-asunto" placeholder="Asunto del ticket">
-            <textarea id="ticket-descripcion" placeholder="Comentario"></textarea>
-            <button onclick="crearTicket()">Crear Ticket</button>
-        </section>
-
-        <!-- Lista de tickets -->
-        <section id="seccion-tickets">
-            <h2 id="titulo-tickets">Tickets</h2>
-
-            <!-- Vista agente: tabla completa -->
-            <div id="vista-agente" style="display:none">
-                <table id="tabla-tickets">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Asunto</th>
-                            <th>Categoría</th>
-                            <th>Estado</th>
-                            <th>Cliente</th>
-                            <th>Fecha</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tickets-body-agente">
-                        <!-- Tickets del agente -->
-                    </tbody>
-                </table>
+            <!-- Saludo -->
+            <div class="greeting">
+                <h2 id="saludo-nombre"></h2>
+                <p id="saludo-descripcion"></p>
             </div>
 
-            <!-- Vista cliente: cards simples -->
-            <div id="vista-cliente" style="display:none">
-                <div id="tickets-body-cliente">
-                    <!-- Cards del cliente -->
+            <!-- Tarjetas de resumen (solo agente) -->
+            <div id="stats-cards" style="display:none">
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="stat-icon blue">🎫</div>
+                        <div class="stat-info">
+                            <p>Total tickets</p>
+                            <h3 id="stat-total">0</h3>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon green">🟢</div>
+                        <div class="stat-info">
+                            <p>Nuevos</p>
+                            <h3 id="stat-nuevos">0</h3>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon amber">🟡</div>
+                        <div class="stat-info">
+                            <p>En progreso</p>
+                            <h3 id="stat-progreso">0</h3>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon red">🔴</div>
+                        <div class="stat-info">
+                            <p>Cerrados</p>
+                            <h3 id="stat-cerrados">0</h3>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-        </section>
+            <!-- Mensaje de estado -->
+            <div id="mensaje"></div>
 
+            <!-- Formulario crear ticket (solo cliente) -->
+            <section id="seccion-crear" style="display:none">
+                <div class="form-section">
+                    <h3>Nuevo Ticket</h3>
+                    <div class="form-row">
+                        <div class="form-field">
+                            <label>Categoría</label>
+                            <select id="ticket-categoria">
+                                <option value="">Seleccionar categoría</option>
+                                <option value="1">Hardware</option>
+                                <option value="2">Software</option>
+                                <option value="3">Red</option>
+                                <option value="4">Acceso</option>
+                            </select>
+                        </div>
+                        <div class="form-field">
+                            <label>Asunto</label>
+                            <input type="text" id="ticket-asunto" placeholder="Ej: No puedo imprimir">
+                        </div>
+                    </div>
+                    <div class="form-field">
+                        <label>Comentario</label>
+                        <textarea id="ticket-descripcion" placeholder="Describí el problema con el mayor detalle posible..."></textarea>
+                    </div>
+                    <button class="btn-crear" onclick="crearTicket()">Crear Ticket</button>
+                </div>
+            </section>
+
+            <!-- Lista tickets -->
+            <section id="seccion-tickets">
+                <div class="section-header">
+                    <h3 id="titulo-tickets">Tickets</h3>
+                </div>
+
+                <!-- Vista agente: tabla -->
+                <div id="vista-agente" style="display:none">
+                    <div class="table-wrap">
+                        <div class="table-head">
+                            <span>ID</span>
+                            <span>Asunto</span>
+                            <span>Categoría</span>
+                            <span>Estado</span>
+                            <span>Cliente</span>
+                            <span>Fecha</span>
+                            <span>Acción</span>
+                        </div>
+                        <div id="tickets-body-agente"></div>
+                    </div>
+                </div>
+
+                <!-- Vista cliente: cards -->
+                <div id="vista-cliente" style="display:none">
+                    <div id="tickets-body-cliente"></div>
+                </div>
+
+            </section>
+        </div>
     </div>
 
     <script src="app.js"></script>
