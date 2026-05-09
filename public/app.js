@@ -137,8 +137,8 @@ function mostrarSeccionPrincipal(usuario) {
     document.getElementById('usuario-avatar').textContent = getIniciales(usuario.nombre);
     document.getElementById('usuario-nombre').textContent = `${usuario.nombre} (${usuario.rol})`;
 
-    // Saludo personalizado
-    document.getElementById('saludo-nombre').textContent = `Hola, ${usuario.nombre.split(' ')[0]}!`;
+    // Saludo personalizado con el primer nombre
+    document.getElementById('saludo-nombre').textContent = `Hola, ${usuario.nombre.split(' ')[0]}! 👋`;
 
     if (usuario.rol === 'agente') {
         document.getElementById('saludo-descripcion').textContent = 'Aquí tenés un resumen de los tickets de soporte.';
@@ -200,7 +200,7 @@ async function cargarTickets() {
             tbody.innerHTML = '';
 
             if (tickets.length === 0) {
-                tbody.innerHTML = '<div class="table-row" style="grid-column:1/-1">No hay tickets todavía</div>';
+                tbody.innerHTML = '<div style="padding:20px;text-align:center;color:#aaa;font-size:0.88rem">No hay tickets todavía</div>';
                 return;
             }
 
@@ -212,7 +212,9 @@ async function cargarTickets() {
                     <span class="id-cell" onclick="verDetalles(${ticket.id_ticket})">#${ticket.id_ticket}</span>
                     <span onclick="verDetalles(${ticket.id_ticket})">${ticket.asunto}</span>
                     <span onclick="verDetalles(${ticket.id_ticket})">${getBadgeCategoria(ticket.categoria)}</span>
-                    <span onclick="verDetalles(${ticket.id_ticket})"><span class="estado estado-${ticket.estado}">${ticket.estado.replace('_', ' ')}</span></span>
+                    <span onclick="verDetalles(${ticket.id_ticket})">
+                        <span class="estado estado-${ticket.estado}">${ticket.estado.replace('_', ' ')}</span>
+                    </span>
                     <span onclick="verDetalles(${ticket.id_ticket})">${ticket.cliente}</span>
                     <span onclick="verDetalles(${ticket.id_ticket})">${new Date(ticket.fecha_creacion).toLocaleDateString()}</span>
                     <span>
@@ -232,7 +234,7 @@ async function cargarTickets() {
             container.innerHTML = '';
 
             if (tickets.length === 0) {
-                container.innerHTML = '<p style="padding:16px;color:#888;font-size:0.88rem">No tenés tickets todavía</p>';
+                container.innerHTML = '<p style="padding:20px;color:#aaa;font-size:0.88rem;text-align:center">No tenés tickets todavía</p>';
                 return;
             }
 
@@ -256,7 +258,7 @@ async function cargarTickets() {
 }
 
 // GET /api/tickets/:id
-// Muestra el detalle del ticket al clickear una fila
+// Muestra el detalle del ticket al clickear una fila con animación
 async function verDetalles(id) {
     // Si ya está abierto lo cerramos
     const existente = document.getElementById(`detalle-${id}`);
@@ -274,13 +276,13 @@ async function verDetalles(id) {
 
         const filaDetalle = document.createElement('div');
         filaDetalle.id = `detalle-${id}`;
-        filaDetalle.style.padding = '0 20px 12px';
+        filaDetalle.className = 'fila-detalle';
         filaDetalle.innerHTML = `
             <div class="detalle-ticket">
                 <h4>💬 Detalle del problema</h4>
                 <p class="ticket-descripcion-detalle">${data.descripcion}</p>
                 ${data.comentarios.length > 1
-                    ? `<h4 style="margin-top:10px">📝 Comentarios</h4>
+                    ? `<h4 style="margin-top:12px">📝 Comentarios</h4>
                        ${data.comentarios.slice(1).map(c => `
                         <div class="comentario">
                             <span class="comentario-usuario">👤 ${c.usuario}</span>
@@ -304,8 +306,8 @@ async function verDetalles(id) {
 // POST /api/tickets
 // Crea un nuevo ticket con transacción en el backend
 async function crearTicket() {
-    const asunto      = document.getElementById('ticket-asunto').value;
-    const descripcion = document.getElementById('ticket-descripcion').value;
+    const asunto       = document.getElementById('ticket-asunto').value;
+    const descripcion  = document.getElementById('ticket-descripcion').value;
     const id_categoria = document.getElementById('ticket-categoria').value;
 
     if (!asunto || !descripcion || !id_categoria) {

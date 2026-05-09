@@ -66,31 +66,31 @@
                 <p id="saludo-descripcion"></p>
             </div>
 
-            <!-- Tarjetas de resumen (solo agente) -->
+            <!-- Tarjetas de resumen solo agente -->
             <div id="stats-cards" style="display:none">
                 <div class="stats">
-                    <div class="stat-card">
+                    <div class="stat-card stat-blue">
                         <div class="stat-icon blue">🎫</div>
                         <div class="stat-info">
                             <p>Total tickets</p>
                             <h3 id="stat-total">0</h3>
                         </div>
                     </div>
-                    <div class="stat-card">
+                    <div class="stat-card stat-green">
                         <div class="stat-icon green">🟢</div>
                         <div class="stat-info">
                             <p>Nuevos</p>
                             <h3 id="stat-nuevos">0</h3>
                         </div>
                     </div>
-                    <div class="stat-card">
+                    <div class="stat-card stat-amber">
                         <div class="stat-icon amber">🟡</div>
                         <div class="stat-info">
                             <p>En progreso</p>
                             <h3 id="stat-progreso">0</h3>
                         </div>
                     </div>
-                    <div class="stat-card">
+                    <div class="stat-card stat-red">
                         <div class="stat-icon red">🔴</div>
                         <div class="stat-info">
                             <p>Cerrados</p>
@@ -103,7 +103,7 @@
             <!-- Mensaje de estado -->
             <div id="mensaje"></div>
 
-            <!-- Formulario crear ticket (solo cliente) -->
+            <!-- Formulario crear ticket solo cliente -->
             <section id="seccion-crear" style="display:none">
                 <div class="form-section">
                     <h3>Nuevo Ticket</h3>
@@ -137,7 +137,7 @@
                     <h3 id="titulo-tickets">Tickets</h3>
                 </div>
 
-                <!-- Vista agente: tabla -->
+                <!-- Vista agente -->
                 <div id="vista-agente" style="display:none">
                     <div class="table-wrap">
                         <div class="table-head">
@@ -153,7 +153,7 @@
                     </div>
                 </div>
 
-                <!-- Vista cliente: cards -->
+                <!-- Vista cliente -->
                 <div id="vista-cliente" style="display:none">
                     <div id="tickets-body-cliente"></div>
                 </div>
